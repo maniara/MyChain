@@ -1,6 +1,0 @@
-{"ip_address": "203.234.223.57", "type": "N"}
-{"ip_address": "203.234.223.191", "type": "N"}
-{"type": "N", "ip_address": "0.0.0.0"}
-{"type": "N", "ip_address": "172.30.1.45"}
-{"type": "N", "ip_address": "192.168.0.23"}
-{"type": "N", "ip_address": "192.168.0.31"}
