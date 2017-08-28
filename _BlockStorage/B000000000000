@@ -1,0 +1,11 @@
+{
+    "block_hash": "sechainfinochain2017",
+    "block_id": "B000000000000",
+    "merkle_root": "sogangfinotek2017",
+    "nonce": 2010101010,
+    "prev_block_hash": "block_hash",
+    "prev_block_id": "B000000000000",
+    "timp_stamp": "0000-00-00-00-00-00",
+    "tx_list": "sechain",
+    "type": "B"
+}

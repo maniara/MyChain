@@ -1,0 +1,4 @@
+{"type": "V", "delegated_num": 2}
+b'{"type": "V", "delegated_num": 2}'
+{"type": "V", "delegated_num": 2}
+{"type": "V", "delegated_num": 2}

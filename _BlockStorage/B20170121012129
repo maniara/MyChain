@@ -1,0 +1,15 @@
+{
+    "block_hash": "03379b67b7b752e03f558adcdf49a5f33cb86accd7c875be33e85d1c8aeb03b2", 
+    "block_id": "B20170121012129", 
+    "block_info": "e1f79ba6496e8d8a58201dfe3f7b3a729cb1b668be571ad85cf84fb43f57f476052dc387fd1275d788d24f3941793a16a356ab23809a4ff9c2019b4188059530", 
+    "block_miner": 1, 
+    "merkle_root": "e1f79ba6496e8d8a58201dfe3f7b3a729cb1b668be571ad85cf84fb43f57f476", 
+    "nonce": 532189016, 
+    "prev_block_hash": "052dc387fd1275d788d24f3941793a16a356ab23809a4ff9c2019b4188059530", 
+    "prev_block_id": "B20170121012122", 
+    "time_stamp": "20170121012129", 
+    "tx_list": [
+        "{\"recv_addr\": \"\", \"tx_id\": \"T20170121012129\", \"time_stamp\": \"20170121012129\", \"pub_key\": \"\", \"type\": \"T\", \"message\": \"91baeba6730b01e0b977942f3cebf54add7e7083991927b154d1f59b\"}\n"
+    ], 
+    "type": "B"
+}
