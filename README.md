@@ -10,7 +10,7 @@ Blockchain System for Education
 <pre><code>source ./venv/bin/activate</code></pre>
 
 3. 외부 라이브러리 설치
-<pre><code>pip3 install - requirments.txt
+<pre><code>pip3 install -r requirments.txt
 pip3 install --editable .
 </code></pre>
 
