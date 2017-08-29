@@ -1,13 +1,12 @@
 import traceback
 from socket import *
-from venv import logger
 
 import key
+import log
 import node
 import transaction
 from block import create_block
-from key import __init__
-from transaction import remove_all, Transaction
+from transaction import Transaction
 
 
 def start(thread_name, ip_address, port):
@@ -25,7 +24,7 @@ def start(thread_name, ip_address, port):
         receive_socket, sender_ip = tcp_socket.accept()
 
         while True:
-            print("Receiving")
+            log.write("Receiving")
             data = receive_socket.recv(buf_size)
             try:
 
@@ -35,7 +34,7 @@ def start(thread_name, ip_address, port):
                 data_json_obj = json.loads(data)
 
                 if data_json_obj['type'] == 'T':
-                    logger.info("Receiving a transaction")
+                    log.write("Receiving a transaction")
 
                     verify_msg = data_json_obj['time_stamp'] + data_json_obj['message']
 
@@ -43,7 +42,7 @@ def start(thread_name, ip_address, port):
                                                              verify_msg)
 
                     if verification is True:
-                        print("Transaction is valid")
+                        log.write("Transaction is valid")
                         tx = Transaction().from_json(data_json_obj)
                         transaction.add_transaction(tx)
 

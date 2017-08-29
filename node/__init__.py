@@ -1,11 +1,7 @@
+from sqlalchemy import Column, String, Integer
+
 import db
 
-my_node = None
-my_node_json = None
-node_list = None
-trust_node_ip = "163.239.27.32"
-node_sync = False   # Need to Set FALSE after Test
-from sqlalchemy import Column, String, Integer
 
 class Node(db.Base):
     __tablename__ = 'nodes'

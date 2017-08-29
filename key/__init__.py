@@ -8,7 +8,7 @@ def generate_key():
     open("../private.pem", "w", encoding='utf-8').write(pri_key.to_pem().decode('utf-8'))
     open("../public.pem", "w", encoding='utf-8').write(pub_key.to_pem().decode('utf-8'))
 
-    return pri_key, pub_key
+    return pub_key, pri_key
 
 
 def get_key():

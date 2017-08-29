@@ -1,7 +1,7 @@
 import codecs
-from venv import logger
 
 import db
+import log
 import node
 import util
 from key import get_key, generate_key
@@ -23,7 +23,7 @@ class MainController(object):
 	def initiate_node(*args):
 		MainController.set_my_node()
 
-		print("Start node")
+		log.write("Start node")
 		MainController.start_node()
 
 	'''
@@ -57,7 +57,7 @@ class MainController(object):
 		my_node = Node(util.get_ip_address('en0'))
 		my_node.public_key = codecs.encode(pub_key.to_string(), 'hex_codec').decode('utf-8')
 		my_node.private_key = codecs.encode(pri_key.to_string(), 'hex_codec').decode('utf-8')
-		print("Set my node")
+		log.write("Set my node")
 
 		node.add_node(my_node)
 

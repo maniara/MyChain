@@ -1,12 +1,8 @@
 import datetime
 
-import db
-
-peer_number = 0
-block_sync = True  # Need to Set FALSE after Test
-
 from sqlalchemy import Column, String, Integer, DateTime
-from block import peer_number
+
+import db
 
 
 class Block(db.Base):
