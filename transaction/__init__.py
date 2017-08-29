@@ -5,13 +5,13 @@ import json
 from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 
-import db
+import storage
 import key
 import transaction
-from p2p import Sender
+from communicator import Sender
 
 
-class Transaction(db.Base):
+class Transaction(storage.Base):
     __tablename__ = 'transactions'
 
     _id = Column(Integer, primary_key=True, autoincrement=True)
@@ -53,19 +53,19 @@ class Transaction(db.Base):
 
 
 def add_transaction(tx):
-    db.insert(tx)
+    storage.insert(tx)
 
 
 def get_transactions():
-    return db.get_all(Transaction)
+    return storage.get_all(Transaction)
 
 
 def count():
-    return db.count(Transaction)
+    return storage.count(Transaction)
 
 
 def remove_all():
-    db.remove_all(Transaction)
+    storage.remove_all(Transaction)
 
 
 def create_tx(pub_key, pri_key, recv_addr, msg):

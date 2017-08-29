@@ -1,13 +1,13 @@
 import codecs
 
-import db
+import storage
 import log
 import node
 import util
 from key import get_key, generate_key
 from node import Node
 
-db.init()
+storage.init()
 
 
 class MainController(object):
@@ -33,7 +33,7 @@ class MainController(object):
 
 	@staticmethod
 	def start_node():
-		from p2p import Receiver
+		from communicator import Receiver
 
 		node_list = node.get_all()
 

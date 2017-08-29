@@ -1,6 +1,6 @@
 import key
 import transaction
-from p2p import Sender
+from communicator import Sender
 
 
 def send_tx(recv_addr, msg):

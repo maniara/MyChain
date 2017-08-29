@@ -1,9 +1,9 @@
 from sqlalchemy import Column, String, Integer
 
-import db
+import storage
 
 
-class Node(db.Base):
+class Node(storage.Base):
     __tablename__ = 'nodes'
 
     _id = Column(Integer, primary_key=True, autoincrement=True)
@@ -19,13 +19,13 @@ class Node(db.Base):
         self.private_key = ''
 
 def add_node(node):
-    db.insert(node)
+    storage.insert(node)
 
 def count():
-    return db.count(Node)
+    return storage.count(Node)
 
 def get_my_node():
     pass
 
 def get_all():
-    return db.get_all(Node)
+    return storage.get_all(Node)

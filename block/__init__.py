@@ -2,10 +2,10 @@ import datetime
 
 from sqlalchemy import Column, String, Integer, DateTime
 
-import db
+import storage
 
 
-class Block(db.Base):
+class Block(storage.Base):
     __tablename__ = 'blocks'
 
     _id = Column(Integer, primary_key=True, autoincrement=True)
@@ -49,7 +49,7 @@ class GenesisBlock(object):
 
 
 def create_block(block):
-    db.insert(block)
+    storage.insert(block)
 
 
 def get_my_block():
@@ -57,11 +57,11 @@ def get_my_block():
 
 
 def count():
-    db.count(Block)
+    storage.count(Block)
 
 
 def get_all_block():
-    return db.get_all(Block)
+    return storage.get_all(Block)
 
 
 def get_last_block():

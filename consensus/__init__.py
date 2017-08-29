@@ -1,8 +1,8 @@
 from sqlalchemy import Column, String, Integer
-import db
+import storage
 
 
-class Vote(db.Base):
+class Vote(storage.Base):
     __tablename__ = 'votes'
 
     _id = Column(Integer, primary_key=True, autoincrement=True)
@@ -14,13 +14,13 @@ class Vote(db.Base):
 
 
 def save_vote(vote):
-    db.insert(vote)
+    storage.insert(vote)
 
 def get_votes():
-    return db.get_all(Vote)
+    return storage.get_all(Vote)
 
 def remove_all_vote():
-    db.remove_all(Vote)
+    storage.remove_all(Vote)
 
 def get_vote_count():
-    return db.count(Vote)
+    return storage.count(Vote)
