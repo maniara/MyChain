@@ -1,8 +1,15 @@
 import codecs
+import logging
 
+<<<<<<< HEAD
 import storage
+=======
+import block
+import db
+>>>>>>> origin/master
 import log
 import node
+import transaction
 import util
 from key import get_key, generate_key
 from node import Node
@@ -42,6 +49,21 @@ class MainController(object):
 		                                              util.get_ip_address('en0'), 3000)).start()
 
 	@staticmethod
+	def list_all_node():
+		for n in node.get_all():
+			log.write(n, logging.DEBUG)
+
+	@staticmethod
+	def list_all_transaction():
+		for t in transaction.get_transactions():
+			log.write(t, logging.DEBUG)
+
+	@staticmethod
+	def list_all_block():
+		for b in block.get_all_block():
+			log.write(b, logging.DEBUG)
+
+	@staticmethod
 	def set_my_node():
 		key_path = '../private.pem'
 		pri_key = ''
@@ -60,5 +82,3 @@ class MainController(object):
 		log.write("Set my node")
 
 		node.add_node(my_node)
-
-

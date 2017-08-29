@@ -34,6 +34,22 @@ class Block(storage.Base):
         self.block_info = block_info
         self.block_miner = 1
 
+    def __str__(self):
+        return self.to_json()
+
+    def to_json(self):
+        return json.dumps({
+            'type': self.type,
+            'time_stamp': self.time_stamp.strftime('%Y%m%d%H%M%S'),
+            'prev_block_id': self.prev_block_id,
+            'prev_block_hash': self.prev_block_hash,
+            'merkle_root': self.merkle_root,
+            'block_hash': self.block_hash,
+            'nonce': self.nonce,
+            'block_id': self.block_id
+        })
+
+
 
 class GenesisBlock(object):
     def __init__(self):

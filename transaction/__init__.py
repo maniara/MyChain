@@ -32,6 +32,9 @@ class Transaction(storage.Base):
         self.message = ''  # document hash
         self.signature = ''
 
+    def __str__(self):
+        return self.to_json()
+
     def from_json(self, dictionary):
         """Constructor"""
         for key in dictionary:
