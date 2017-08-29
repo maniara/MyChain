@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy import Column, String, Integer
 
 import db
@@ -17,6 +19,17 @@ class Node(db.Base):
         self.ip_address = ip_address
         self.public_key = ''
         self.private_key = ''
+
+    def __str__(self):
+        return self.to_json()
+
+    def to_json(self):
+        return json.dumps({
+            'type': self.type,
+            'ip_address': self.ip_address,
+            'pub_key': self.public_key,
+            'pri_key': self.private_key
+        })
 
 def add_node(node):
     db.insert(node)
