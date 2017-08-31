@@ -1,41 +1,38 @@
+import signal
+import sys
+
 import click
 
-import transaction
-from app.MainController import MainController
+import communicator
 import key
-import click
+from app import *
 
-import key
-import transaction
-from app.MainController import MainController
-
+storage.init()
 
 @click.group()
 def cli():
 	"""Command line interface for private block chain."""
 	pass
 
+
 @cli.command()
-@click.option('--port', '-p', is_flag=True, help="Port number for socket.")
+@click.option('--port', '-p', help="Port number for socket.")
 def run(port=None):
+
 	if port:
-		MainController.initiate_node(port)
+		initiate_node(port)
 	else:
-		MainController.initiate_node(3000)
+		initiate_node(3000)
+
+	communicator.find_nodes()
+
 
 @cli.command()
-@click.option('--addr', '-a', multiple=True, help="Address for sending a transaction.")
-@click.option('--message', '-m', multiple=True, help="Message included in transaction.")
-def sendtx(addr, message):
-	MainController.set_my_node()
-
-	if len(addr) != len(message):
-		click.echo('arrggg')
-
-	for idx in range(len(addr)):
-		pri_key, pub_key = key.get_key()
-		tx = transaction.create_tx(pub_key, pri_key, addr[idx], message[idx])
-		transaction.send_tx(tx)
+@click.option('--message', '-m', help="Message included in transaction.")
+def sendtx(message):
+	pri_key, pub_key = key.get_key()
+	tx = transaction.create_tx(pub_key, pri_key, message)
+	transaction.send_tx(tx)
 
 
 @cli.command()
@@ -43,20 +40,27 @@ def sendtx(addr, message):
 def list(target):
 	if target == 'block':
 		click.echo('list of blocks')
-		MainController.list_all_block()
+		list_all_block()
 
 	elif target == 'transaction':
 		click.echo('list of transactions')
-		MainController.list_all_transaction()
+		list_all_transaction()
 
 	elif target == 'node':
 		click.echo('list of nodes')
-		MainController.list_all_node()
+		list_all_node()
 
 	else:
 		click.echo('unknown list type')
 		click.echo('list type should be one of [block|transaction|node]')
 
-@cli.command()
-def quit():
-	exit(0)
+
+def signal_handler(_signal, frame):
+	try:
+		stop_node()
+		sys.exit(0)
+	except:
+		pass
+
+
+signal.signal(signal.SIGINT, signal_handler)

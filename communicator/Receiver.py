@@ -48,6 +48,7 @@ def start(thread_name, ip_address, port):
 
                 elif data_json_obj['type'] == 'N':
                     from node import node_controller
+                    log.write("Receiving Node")
 
                     node_list = node.get_all()
                     received_ip = data_json_obj['ip_address']
