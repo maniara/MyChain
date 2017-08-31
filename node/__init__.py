@@ -1,6 +1,6 @@
 import json
 
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String
 
 import storage
 
@@ -8,8 +8,7 @@ import storage
 class Node(storage.Base):
     __tablename__ = 'nodes'
 
-    _id = Column(Integer, primary_key=True, autoincrement=True)
-    ip_address = Column(String)
+    ip_address = Column(String, primary_key=True)
     type = Column(String)
     public_key = Column(String)
     private_key = Column(String)
@@ -32,7 +31,7 @@ class Node(storage.Base):
         })
 
 def add_node(node):
-    storage.insert(node)
+    storage.insert_or_update(node, ip_address=node.ip_address)
 
 def count():
     return storage.count(Node)

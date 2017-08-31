@@ -18,6 +18,14 @@ def insert(obj):
     session.commit()
 
 
+def insert_or_update(obj, **kwargs):
+	if session.query(obj.__class__).filter_by(**kwargs).first():
+		pass
+	else:
+		session.add(obj)
+		session.commit()
+
+
 def count(clz):
     return session.query(clz).count()
 
