@@ -1,6 +1,5 @@
 click==6.7
 ecdsa==0.13
--e git+https://github.com/maniara/MyChainForKISA.git@86ae2c776332d4d92b369b247c96873886faf255#egg=mychain
 netifaces==0.10.6
 python-dateutil==2.6.1
 six==1.10.0
