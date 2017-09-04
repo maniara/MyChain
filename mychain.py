@@ -2,12 +2,7 @@ import signal
 
 import click
 
-import communicator
-import key
 from app import *
-
-storage.init()
-key.generate_key()
 
 
 @click.group()
@@ -24,7 +19,6 @@ def run(port=None):
 	else:
 		initiate_node(3000)
 
-	communicator.start()
 
 
 @cli.command()

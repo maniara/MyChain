@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, Integer
-import storage
+
+from app import storage
 
 
 class Vote(storage.Base):

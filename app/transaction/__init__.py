@@ -5,9 +5,8 @@ from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 
 # import key
-import storage
-import transaction
-from communicator import sender
+from app import storage
+from app.communicator import Sender
 
 
 class Transaction(storage.Base):
@@ -86,4 +85,4 @@ def create_tx(pub_key, pri_key, msg):
 
 
 def send_tx(tx):
-	sender.send_to_all_node(tx.to_json())
+	Sender.send_to_all_node(tx.to_json())

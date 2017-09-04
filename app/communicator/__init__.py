@@ -4,8 +4,8 @@ import time
 
 import zmq
 
-import log
-import node
+from app import log
+from app import node
 
 PING_PORT_NUMBER = 9999
 PING_MSG_SIZE = 1

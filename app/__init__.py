@@ -1,22 +1,17 @@
-import logging
-
-import block
-import log
-import node
-import storage
-import transaction
-import util
-# from key import get_key, generate_key
-from communicator import receiver
-from node import Node
+from app import *
+from app import log, storage, node, transaction, util, key
+from app.communicator import Receiver
+from app.node import Node
 
 storage.init()
+key.generate_key()
 
 listen_thread = None
 
 
 def initiate_node(*args):
 	set_my_node()
+	communicator.start()
 
 	log.write("Start node")
 	start_node()
@@ -29,16 +24,15 @@ def initiate_node(*args):
 
 
 def start_node():
-	from communicator import receiver
 	import threading
 	global listen_thread
-	listen_thread = threading.Thread(target=receiver.start, args=("Listener_Thread",
+	listen_thread = threading.Thread(target=Receiver.start, args=("Listener_Thread",
 	                                                              util.get_ip_address('en0'), 3000))
 	listen_thread.start()
 
 
 def stop_node():
-	receiver.stop()
+	Receiver.stop()
 	global listen_thread
 	listen_thread.join()
 

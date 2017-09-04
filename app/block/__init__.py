@@ -1,4 +1,5 @@
-import storage
+from app import storage
+
 
 def create_block(block):
     storage.insert(block)

@@ -1,9 +1,9 @@
 from numpy import long
 
-import node
-import transaction
-from consensus import get_vote_count, get_votes
-from consensus.merkle_tree import merkle_tree
+from app import node
+from app import transaction
+from app.consensus import get_vote_count, get_votes
+from app.consensus.merkle_tree import merkle_tree
 
 
 def vote_delegated_node():

@@ -2,7 +2,7 @@ import json
 
 from sqlalchemy import Column, String
 
-import storage
+from app import storage
 
 
 class Node(storage.Base):
