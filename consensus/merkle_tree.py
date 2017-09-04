@@ -15,19 +15,7 @@ def merkle_tree(transactions):
         mt.add(t.encode('utf-8'))
 
     return codecs.encode(mt.build(), 'hex-codec').decode('utf-8')
-    # sub_tree = []
 
-    # for i in chunk(transactions, 1):
-    #     if len(i) == 2:
-    #         hash = hashlib.sha256(str(i[0] + i[1]).encode('utf-8')).hexdigest()
-    #     else:
-    #         hash = hashlib.sha256(str(i[0] + i[0]).encode('utf-8')).hexdigest()
-    #     sub_tree.append(hash)
-    #
-    # if len(sub_tree) == 1:
-    #     return sub_tree[0]
-    # else:
-    #     return merkle_tree(sub_tree)
 
 # ========================================================
 if __name__ == '__main__':

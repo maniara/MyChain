@@ -4,16 +4,26 @@ import time
 
 import zmq
 
-# include <czmq.h>
+import log
 import node
 
 PING_PORT_NUMBER = 9999
 PING_MSG_SIZE = 1
 PING_INTERVAL = 5  # Once per second
 
+is_running = True
+t = None
 
-def find_nodes():
-	def run_find_node_thread():
+
+def stop():
+	global is_running, t
+	is_running = False
+	t.join()
+
+
+def start():
+	def find_node_thread():
+
 		# Create UDP socket
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 
@@ -34,14 +44,14 @@ def find_nodes():
 		# Send first ping right away
 		ping_at = time.time()
 
-		while True:
+		while is_running:
 			timeout = ping_at - time.time()
 			if timeout < 0:
 				timeout = 0
 			try:
 				events = dict(poller.poll(1000 * timeout))
 			except KeyboardInterrupt:
-				print("interrupted")
+				log.write("interrupted")
 				break
 
 			# Someone answered our ping
@@ -50,11 +60,12 @@ def find_nodes():
 				ip = addrinfo[0]
 				n = node.Node(ip)
 				if node.add_node(n):
-					print('Find ' + ip)
+					log.write('Find ' + ip)
 
 			if time.time() >= ping_at:
-				print('Finding a node...')
 				sock.sendto(b'!', 0, ("255.255.255.255", PING_PORT_NUMBER))
 				ping_at = time.time() + PING_INTERVAL
 
-	threading.Thread(target=run_find_node_thread()).start()
+	global t
+	t = threading.Thread(target=find_node_thread)
+	t.start()

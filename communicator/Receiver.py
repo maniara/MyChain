@@ -1,12 +1,18 @@
 import traceback
 from socket import *
 
-import key
 import log
 import node
 import transaction
 from block import create_block
 from transaction import Transaction
+
+is_running = True
+
+
+def stop():
+    global is_running
+    is_running = False
 
 
 def start(thread_name, ip_address, port):
@@ -19,11 +25,11 @@ def start(thread_name, ip_address, port):
     tcp_socket.bind(addr)
     tcp_socket.listen(5)
 
-    while True:
+    while is_running:
 
         receive_socket, sender_ip = tcp_socket.accept()
 
-        while True:
+        while is_running:
             log.write("Receiving")
             data = receive_socket.recv(buf_size)
             try:
@@ -35,16 +41,19 @@ def start(thread_name, ip_address, port):
 
                 if data_json_obj['type'] == 'T':
                     log.write("Receiving a transaction")
+                    tx = Transaction().from_json(data_json_obj)
+                    transaction.add_transaction(tx)
 
-                    verify_msg = data_json_obj['time_stamp'] + data_json_obj['message']
-
-                    verification = key.verify_signature(data_json_obj['pub_key'], data_json_obj['signature'],
-                                                             verify_msg)
-
-                    if verification is True:
-                        log.write("Transaction is valid")
-                        tx = Transaction().from_json(data_json_obj)
-                        transaction.add_transaction(tx)
+                    # TODO release comment when pki is implemented
+                    # verify_msg = data_json_obj['time_stamp'] + data_json_obj['message']
+                    #
+                    # if key.verify_signature(data_json_obj['pub_key'], data_json_obj['signature'],
+                    #                                         verify_msg) is True:
+                    #     log.write("Transaction is valid")
+                    #     tx = Transaction().from_json(data_json_obj)
+                    #     transaction.add_transaction(tx)
+                    # else:
+                    #     log.write("Transaction is invalid")
 
                 elif data_json_obj['type'] == 'N':
                     from node import node_controller

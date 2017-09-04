@@ -9,7 +9,7 @@ setup(
 		'ecdsa'
 	],
 	entry_points='''
-        [console_scripts]
-        mychain=mychain:cli
+    [console_scripts]
+    mychain=mychain:cli
     ''',
 )

@@ -1,14 +1,13 @@
-import codecs
 import datetime
 import json
 
 from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 
-import key
+# import key
 import storage
 import transaction
-from communicator import Sender
+from communicator import sender
 
 
 class Transaction(storage.Base):
@@ -72,16 +71,19 @@ def create_tx(pub_key, pri_key, msg):
 	tx = Transaction()
 	tx.message = msg
 
-	pub_key_b = key.key_to_string(pub_key)
-	tx.pub_key = codecs.encode(pub_key_b, 'hex_codec').decode('utf-8')
-
 	msg = tx.time_stamp.strftime('%Y%m%d%H%M%S') + msg
 
-	sig = key.get_signature(msg, pri_key)
-	tx.signature = codecs.encode(sig, 'hex_codec').decode('utf-8')
+	# TODO release comment when pki is implemented
+	# pub_key_b = key.key_to_string(pub_key)
+	# tx.pub_key = codecs.encode(pub_key_b, 'hex_codec').decode('utf-8')
+	# sig = key.get_signature(msg, pri_key)
+
+	sig = msg
+	tx.signature = sig
+	# codecs.encode(sig, 'hex_codec').decode('utf-8')
 
 	return tx
 
 
 def send_tx(tx):
-	Sender.send_to_all_node(tx.to_json())
+	sender.send_to_all_node(tx.to_json())

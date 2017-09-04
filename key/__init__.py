@@ -1,18 +1,21 @@
+import os
+
 from ecdsa import SigningKey, NIST256p, VerifyingKey
 
+KEY_PATH = os.getcwd()
 
 def generate_key():
     pri_key = SigningKey.generate(curve=NIST256p)
     pub_key = pri_key.get_verifying_key()
 
-    open("../private.pem", "w", encoding='utf-8').write(pri_key.to_pem().decode('utf-8'))
-    open("../public.pem", "w", encoding='utf-8').write(pub_key.to_pem().decode('utf-8'))
+    open(KEY_PATH + "/private.pem", "w", encoding='utf-8').write(pri_key.to_pem().decode('utf-8'))
+    open(KEY_PATH + "/public.pem", "w", encoding='utf-8').write(pub_key.to_pem().decode('utf-8'))
 
     return pub_key, pri_key
 
 
 def get_key():
-    pri_key = SigningKey.from_pem(open("../private.pem", encoding='utf-8').read())
+    pri_key = SigningKey.from_pem(open(KEY_PATH + "/private.pem", encoding='utf-8').read())
     pub_key = pri_key.get_verifying_key()
 
     return pri_key, pub_key
