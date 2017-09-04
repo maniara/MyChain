@@ -1,52 +1,6 @@
 import signal
 
-import click
-
 from app import *
-
-
-@click.group()
-def cli():
-	"""Command line interface for private block chain."""
-	pass
-
-
-@cli.command()
-@click.option('--port', '-p', help="Port number for socket.")
-def run(port=None):
-	if port:
-		initiate_node(port)
-	else:
-		initiate_node(3000)
-
-
-
-@cli.command()
-@click.option('--message', '-m', help="Message included in transaction.")
-def sendtx(message):
-	pri_key, pub_key = key.get_key()
-	tx = transaction.create_tx(pub_key, pri_key, message)
-	transaction.send_tx(tx)
-
-
-@cli.command()
-@click.argument('target')
-def list(target):
-	if target == 'block':
-		click.echo('list of blocks')
-		list_all_block()
-
-	elif target == 'transaction':
-		click.echo('list of transactions')
-		list_all_transaction()
-
-	elif target == 'node':
-		click.echo('list of nodes')
-		list_all_node()
-
-	else:
-		click.echo('unknown list type')
-		click.echo('list type should be one of [block|transaction|node]')
 
 
 def signal_handler(_signal, frame):
@@ -55,31 +9,11 @@ def signal_handler(_signal, frame):
 
 
 signal.signal(signal.SIGINT, signal_handler)
+communicator.start()
+initiate_node(3000)
 
 
-# Menu 1
-def menu1():
-	print("Input a port number \n")
-	print("9. Back")
-	print("0. Quit")
-	choice = input(" >>  ")
-	print(choice)
-
-	if choice != '9' or choice != '0':
-		port = int(choice)
-		if port:
-			initiate_node(port)
-		else:
-			initiate_node(3000)
-
-		communicator.start()
-
-	exec_menu(choice)
-	return
-
-
-# Menu 2
-def menu2():
+def send_tx():
 	print("Input a message \n")
 	print("9. Back")
 	print("0. Quit")
@@ -97,6 +31,26 @@ def menu2():
 	return
 
 
+def show_node_list():
+	print("\nNode list\n")
+
+	list_all_node()
+	back()
+
+
+def show_transaction_list():
+	print("\nTransaction list\n")
+
+	list_all_transaction()
+	back()
+
+
+def show_block_list():
+	print("\nBlock list\n")
+
+	list_all_block()
+	back()
+
 # Execute menu
 def exec_menu(choice):
 	ch = choice.lower()
@@ -113,30 +67,34 @@ def exec_menu(choice):
 
 
 def main_menu():
-	print("Command line interface for private block chain.\n")
-	print("Please choose the menu you want to start:")
-	print("1. Run")
-	print("2. Send a transaction")
-	print("\n0. Quit")
+	print("\nPlease choose the menu you want to start:")
+	print("1. Send a transaction")
+	print("2. Show node list")
+	print("3. Show transaction list")
+	print("4. Show block list")
+
+	print("\n0. Quit\n")
 	choice = input(" >>  ")
 	exec_menu(choice)
 
 	return
 
-
 # Back to main menu
 def back():
 	menu_actions['main_menu']()
 
-
 # Menu definition
 menu_actions = {
 	'main_menu': main_menu,
-	'1': menu1,
-	'2': menu2,
+	'1': send_tx,
+	'2': show_node_list,
+	'3': show_transaction_list,
+	'4': show_block_list,
 	'9': back,
 	'0': exit,
 }
+
+print("\nCommand line interface for private block chain.\n")
 
 if __name__ == '__main__':
 	main_menu()

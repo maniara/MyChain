@@ -1,7 +1,6 @@
 import netifaces
 import socket
 
-1
 
 
 def get_ip_address(ifname):

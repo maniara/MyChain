@@ -30,6 +30,10 @@ class Node(storage.Base):
             'pri_key': self.private_key
         })
 
+
+def remove_node(node):
+    storage.remove(node)
+
 def add_node(node):
     storage.insert_or_update(node, ip_address=node.ip_address)
 

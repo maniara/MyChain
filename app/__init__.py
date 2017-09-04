@@ -1,5 +1,5 @@
 from app import *
-from app import log, storage, node, transaction, util, key
+from app import log, storage, node, transaction, util, key, block
 from app.communicator import Receiver
 from app.node import Node
 
@@ -11,7 +11,6 @@ listen_thread = None
 
 def initiate_node(*args):
 	set_my_node()
-	communicator.start()
 
 	log.write("Start node")
 	start_node()
