@@ -11,7 +11,7 @@ def send(ip_address, message, port, *args):
 		tcp_socket.connect(receiver_addr)
 		tcp_socket.send(message.encode('utf-8'))
 	except Exception as e:
-		node.remove_node(node.Node(ip_address=ip_address))
+		node.remove_node(ip_address=ip_address)
 		print("Connection Failed while sending", e)
 
 
@@ -27,5 +27,6 @@ def send_to_all_node(message):
 			send_threads.append(t)
 		except Exception as e:
 			print("SENDTOALL EXCEPT", e)
+
 	for thread in send_threads:
 		thread.join()

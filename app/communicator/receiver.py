@@ -2,7 +2,6 @@ import traceback
 from socket import *
 
 from app import log
-from app import node
 from app import transaction
 from app.block import create_block
 from app.transaction import Transaction
@@ -54,22 +53,6 @@ def start(thread_name, ip_address, port):
 					#     transaction.add_transaction(tx)
 					# else:
 					#     log.write("Transaction is invalid")
-
-				elif data_json_obj['type'] == 'N':
-					from app.node import node_controller
-					log.write("Receiving Node")
-
-					node_list = node.get_all()
-					received_ip = data_json_obj['ip_address']
-					sync_flag = False
-
-					for outer_list in node_list:
-						outer_list = str(outer_list)
-						if outer_list == received_ip:
-							sync_flag = True
-
-					if sync_flag is False:
-						node_controller.add_new_node(data_json_obj)
 
 				# When received block, add to file database
 				elif data_json_obj['type'] == 'B':
