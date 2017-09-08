@@ -1,4 +1,5 @@
 import codecs
+import hashlib
 
 from merkle import MerkleTree
 
@@ -7,7 +8,7 @@ def chunk(list, n):
     for i in range(0, len(list), n):
         yield list[i:i + n]
 
-
+# Using merkle package
 def merkle_tree(transactions):
     mt = MerkleTree()
 
@@ -16,6 +17,38 @@ def merkle_tree(transactions):
 
     return codecs.encode(mt.build(), 'hex-codec').decode('utf-8')
 
+# recursive method
+def merkle_tree_2(p_items):
+    blocks = []
+
+    if not p_items:
+        raise ValueError('')
+
+    for m in sorted(p_items):
+        blocks.append(m)
+
+    list_len = len(blocks)
+
+    # make even number of items in list
+    while list_len % 2 != 0:
+        blocks.extend(blocks[-1:])
+        list_len = len(blocks)
+
+    secondary = []
+
+    for k in [blocks[x:x + 2] for x in range(0, len(blocks), 2)]:
+        hasher = hashlib.sha256()
+        k[0] = k[0].encode('utf-8')
+        k[1] = k[1].encode('utf-8')
+        hasher.update(k[0] + k[1])
+        secondary.append(hasher.hexdigest())
+
+    if len(secondary) == 1:
+        return secondary[0][0:64]
+
+    # recursive
+    else:
+        return merkle_tree_2(secondary)
 
 # ========================================================
 if __name__ == '__main__':

@@ -2,14 +2,14 @@ import traceback
 from socket import *
 
 from app import log
-from app import node
 from app import transaction
-from app.block import create_block
+from app.block import create_block, Block
 from app.transaction import Transaction
 
 is_running = True
 
 
+# 수신 스레드 정지
 def stop():
 	global is_running
 	is_running = False
@@ -21,27 +21,38 @@ def start(thread_name, ip_address, port):
 	addr = (ip_address, port)
 	buf_size = 1024
 
+	# 소켓 생성 및 바인딩
 	tcp_socket = socket(AF_INET, SOCK_STREAM)
 	tcp_socket.bind(addr)
 	tcp_socket.listen(5)
 
 	while is_running:
 
+		# 요청이 있을 경우 소켓과 송신자의 ip 주소 저장
 		receive_socket, sender_ip = tcp_socket.accept()
 
 		while is_running:
 			log.write("Receiving")
+
+			# 소켓으로부터 버퍼 사이즈씩 데이터 수신
 			data = receive_socket.recv(buf_size)
 			try:
 
+				# 수신된 데이터가 없는 경우
 				if len(data) == 0:
-					break
+					continue
 
+				# json 형태의 데이터를 dict 타입으로 변경
 				data_json_obj = json.loads(data)
 
+				# Transaction을 받은 경우
 				if data_json_obj['type'] == 'T':
 					log.write("Receiving a transaction")
+
+					# dict 데이터로부터 transaction 객체 생성
 					tx = Transaction().from_json(data_json_obj)
+
+					# transaction 추가
 					transaction.add_transaction(tx)
 
 					# TODO release comment when pki is implemented
@@ -55,26 +66,16 @@ def start(thread_name, ip_address, port):
 					# else:
 					#     log.write("Transaction is invalid")
 
-				elif data_json_obj['type'] == 'N':
-					from app.node import node_controller
-					log.write("Receiving Node")
-
-					node_list = node.get_all()
-					received_ip = data_json_obj['ip_address']
-					sync_flag = False
-
-					for outer_list in node_list:
-						outer_list = str(outer_list)
-						if outer_list == received_ip:
-							sync_flag = True
-
-					if sync_flag is False:
-						node_controller.add_new_node(data_json_obj)
-
-				# When received block, add to file database
+				# 블록을 수신한 경우
 				elif data_json_obj['type'] == 'B':
+					# 기존의 트랜잭션 삭제
 					transaction.remove_all()
-					create_block(data_json_obj['block_id'], data)
+
+					# 블록 생성
+					received_block = Block().from_json(data_json_obj)
+
+					# 블록 저장
+					create_block(received_block)
 
 			except:
 				traceback.print_exc()

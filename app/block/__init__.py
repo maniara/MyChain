@@ -1,5 +1,4 @@
-import datetime
-
+from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 
 from app import storage
@@ -21,19 +20,6 @@ class Block(storage.Base):
     block_info = Column(String)
     block_miner = Column(Integer)
 
-    def __init__(self, prev_block_id, prev_block_hash, tx_list, merkle_root, nonce, block_info):
-        self.type = 'B'
-        self.prev_block_id = prev_block_id
-        self.prev_block_hash = prev_block_hash
-        self.tx_list = tx_list
-        self.merkle_root = merkle_root
-        self.time_stamp = datetime.datetime.now()
-        self.block_id = self.type + self.time_stamp.strftime('%Y%m%d%H%M%S')
-        self.block_hash = ''
-        self.nonce = nonce
-        self.block_info = block_info
-        self.block_miner = 1
-
     def __str__(self):
         return self.to_json()
 
@@ -48,6 +34,14 @@ class Block(storage.Base):
             'nonce': self.nonce,
             'block_id': self.block_id
         })
+
+    def from_json(self, dictionary):
+        """Constructor"""
+        for key in dictionary:
+            setattr(self, key, dictionary[key])
+
+        self.time_stamp = parser.parse(self.time_stamp)
+        return self
 
 
 class GenesisBlock(object):

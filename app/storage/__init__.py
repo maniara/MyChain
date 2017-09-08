@@ -11,35 +11,37 @@ session = DBSession()
 
 
 def init():
-    Base.metadata.create_all(engine)
+	Base.metadata.create_all(engine)
+
 
 def insert(obj):
-    session.add(obj)
-    session.commit()
+	session.add(obj)
+	session.commit()
 
 
-def insert_or_update(obj, **kwargs):
-	if session.query(obj.__class__).filter_by(**kwargs).first():
-		pass
+def insert_or_update(obj, cond):
+	if session.query(obj.__class__).filter(cond).first():
+		return
 	else:
-		session.add(obj)
-		session.commit()
+		insert(obj)
+
+
+def get(clz, **kwargs):
+	return session.query(clz).filter_by(**kwargs).first()
 
 
 def count(clz):
-    return session.query(clz).count()
+	return session.query(clz).count()
 
 
 def remove(obj):
-    session.delete(obj)
-    session.commit()
-
+	session.delete(obj)
+	session.commit()
 
 def get_all(clz):
-    return session.query(clz).all()
+	return session.query(clz).all()
 
 
 def remove_all(table_name):
-    session.execute('''TRUNCATE TABLE ''' + table_name)
-    session.commit()
-    session.close()
+	session.execute('''TRUNCATE TABLE ''' + table_name)
+	session.commit()

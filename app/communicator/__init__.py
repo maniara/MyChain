@@ -15,6 +15,7 @@ is_running = True
 t = None
 
 
+# 노드 검색 스레드 정지
 def stop():
 	global is_running, t
 	is_running = False
@@ -24,27 +25,24 @@ def stop():
 def start():
 	def find_node_thread():
 
-		# Create UDP socket
+		# UDP 소켓 생성
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 
-		# Ask operating system to let us do broadcasts from socket
+		# 소켓에 브로드캐스트 옵션 설정
 		sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-		# Bind UDP socket to local port so we can receive pings
+		# 포트 번호와 로컬 주소에 바인딩
 		sock.bind(('', PING_PORT_NUMBER))
 
-		# main ping loop
-		# We use zmq_poll to wait for activity on the UDP socket, since
-		# this function works on non-0MQ file handles. We send a beacon
-		# once a second, and we collect and report beacons that come in
-		# from other nodes:
+		# zmq라이브러리를 이용해 UDP 소켓을 폴링
 		poller = zmq.Poller()
 		poller.register(sock, zmq.POLLIN)
 
-		# Send first ping right away
+		# 실행 시 ping 전송
 		ping_at = time.time()
 
 		while is_running:
+			# 타이머 설정
 			timeout = ping_at - time.time()
 			if timeout < 0:
 				timeout = 0
@@ -54,14 +52,14 @@ def start():
 				log.write("interrupted")
 				break
 
-			# Someone answered our ping
+			# ping 으로부터 응답이 오는 경우 노드 추가
 			if sock.fileno() in events:
 				msg, addrinfo = sock.recvfrom(PING_MSG_SIZE)
 				ip = addrinfo[0]
 				n = node.Node(ip)
-				if node.add_node(n):
-					log.write('Find ' + ip)
+				node.add_node(n)
 
+			# 일정 주기 마다 브로드캐스트로 ping
 			if time.time() >= ping_at:
 				sock.sendto(b'!', 0, ("255.255.255.255", PING_PORT_NUMBER))
 				ping_at = time.time() + PING_INTERVAL

@@ -4,13 +4,17 @@ from app import *
 
 
 def signal_handler(_signal, frame):
-	import os
-	os._exit(1)
+	terminate()
 
 
 signal.signal(signal.SIGINT, signal_handler)
 communicator.start()
 initiate_node(3000)
+
+
+def terminate():
+	import os
+	os._exit(1)
 
 
 def send_tx():
@@ -91,7 +95,7 @@ menu_actions = {
 	'3': show_transaction_list,
 	'4': show_block_list,
 	'9': back,
-	'0': exit,
+	'0': terminate,
 }
 
 print("\nCommand line interface for private block chain.\n")
