@@ -1,10 +1,16 @@
-from app import *
-from app import log, storage, node, transaction, util, key, block
-from app.communicator import receiver
-from app.node import Node
+import codecs
+import logging
+
+import block
+import log
+import node
+import storage
+import transaction
+import util
+from key import get_key, generate_key
+from node import Node
 
 storage.init()
-key.generate_key()
 
 listen_thread = None
 
@@ -23,19 +29,18 @@ def initiate_node(*args):
 
 
 def start_node():
+	from communicator import Receiver
 	import threading
 	global listen_thread
-	listen_thread = threading.Thread(target=receiver.start, args=("Listener_Thread",
+	listen_thread = threading.Thread(target=Receiver.start, args=("Listener_Thread",
 	                                                              util.get_ip_address('en0'), 3000))
 	listen_thread.start()
 
 
 def stop_node():
-	storage.session.commit()
-	storage.session.close()
-	receiver.stop()
 	global listen_thread
 	listen_thread.join()
+
 
 def list_all_node():
 	for n in node.get_all():
@@ -53,24 +58,20 @@ def list_all_block():
 
 
 def set_my_node():
-	# todo implement generating key
-	'''
 	key_path = '../private.pem'
 	pri_key = ''
 	pub_key = ''
 	try:
-
 		f = open(key_path, encoding='utf-8')
 		f.close()
 		pri_key, pub_key = get_key()
 
 	except:
 		pri_key, pub_key = generate_key()
-	'''
 
 	my_node = Node(util.get_ip_address('en0'))
-
-	# my_node.public_key = codecs.encode(pub_key.to_string(), 'hex_codec').decode('utf-8')
-	# my_node.private_key = codecs.encode(pri_key.to_string(), 'hex_codec').decode('utf-8')
+	my_node.public_key = codecs.encode(pub_key.to_string(), 'hex_codec').decode('utf-8')
+	my_node.private_key = codecs.encode(pri_key.to_string(), 'hex_codec').decode('utf-8')
 	log.write("Set my node")
+
 	node.add_node(my_node)

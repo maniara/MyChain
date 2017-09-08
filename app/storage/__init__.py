@@ -30,6 +30,14 @@ def get(clz, **kwargs):
 	return session.query(clz).filter_by(**kwargs).first()
 
 
+def insert_or_update(obj, **kwargs):
+	if session.query(obj.__class__).filter_by(**kwargs).first():
+		pass
+	else:
+		session.add(obj)
+		session.commit()
+
+
 def count(clz):
 	return session.query(clz).count()
 

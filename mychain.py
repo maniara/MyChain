@@ -1,104 +1,66 @@
 import signal
+import sys
 
+import click
+
+import communicator
+import key
 from app import *
+
+storage.init()
+
+@click.group()
+def cli():
+	"""Command line interface for private block chain."""
+	pass
+
+
+@cli.command()
+@click.option('--port', '-p', help="Port number for socket.")
+def run(port=None):
+
+	if port:
+		initiate_node(port)
+	else:
+		initiate_node(3000)
+
+	communicator.find_nodes()
+
+
+@cli.command()
+@click.option('--message', '-m', help="Message included in transaction.")
+def sendtx(message):
+	pri_key, pub_key = key.get_key()
+	tx = transaction.create_tx(pub_key, pri_key, message)
+	transaction.send_tx(tx)
+
+
+@cli.command()
+@click.argument('target')
+def list(target):
+	if target == 'block':
+		click.echo('list of blocks')
+		list_all_block()
+
+	elif target == 'transaction':
+		click.echo('list of transactions')
+		list_all_transaction()
+
+	elif target == 'node':
+		click.echo('list of nodes')
+		list_all_node()
+
+	else:
+		click.echo('unknown list type')
+		click.echo('list type should be one of [block|transaction|node]')
 
 
 def signal_handler(_signal, frame):
-	terminate()
+	try:
+		stop_node()
+		sys.exit(0)
+	except:
+		pass
 
 
 signal.signal(signal.SIGINT, signal_handler)
-communicator.start()
-initiate_node(3000)
-
-
-def terminate():
-	import os
-	os._exit(1)
-
-
-def send_tx():
-	print("Input a message \n")
-	print("9. Back")
-	print("0. Quit")
-
-	choice = input(" >>  ")
-	print(choice)
-
-	if choice != '9' or choice != '0':
-		message = choice
-		pri_key, pub_key = key.get_key()
-		tx = transaction.create_tx(pub_key, pri_key, message)
-		transaction.send_tx(tx)
-
-	exec_menu(choice)
-	return
-
-
-def show_node_list():
-	print("\nNode list\n")
-
-	list_all_node()
-	back()
-
-
-def show_transaction_list():
-	print("\nTransaction list\n")
-
-	list_all_transaction()
-	back()
-
-
-def show_block_list():
-	print("\nBlock list\n")
-
-	list_all_block()
-	back()
-
-# Execute menu
-def exec_menu(choice):
-	ch = choice.lower()
-	if ch == '':
-		menu_actions['main_menu']()
-	else:
-		try:
-			menu_actions[ch]()
-		except KeyError:
-			print
-			"Invalid selection, please try again.\n"
-			menu_actions['main_menu']()
-	return
-
-
-def main_menu():
-	print("\nPlease choose the menu you want to start:")
-	print("1. Send a transaction")
-	print("2. Show node list")
-	print("3. Show transaction list")
-	print("4. Show block list")
-
-	print("\n0. Quit\n")
-	choice = input(" >>  ")
-	exec_menu(choice)
-
-	return
-
-# Back to main menu
-def back():
-	menu_actions['main_menu']()
-
-# Menu definition
-menu_actions = {
-	'main_menu': main_menu,
-	'1': send_tx,
-	'2': show_node_list,
-	'3': show_transaction_list,
-	'4': show_block_list,
-	'9': back,
-	'0': terminate,
-}
-
-print("\nCommand line interface for private block chain.\n")
-
-if __name__ == '__main__':
-	main_menu()
