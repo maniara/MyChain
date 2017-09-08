@@ -1,9 +1,16 @@
+import logging
+
 from app import *
 from app import log, storage, node, transaction, util, key, block
 from app.communicator import receiver
 from app.node import Node
 
 storage.init()
+
+
+
+
+
 key.generate_key()
 
 listen_thread = None
