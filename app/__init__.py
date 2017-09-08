@@ -1,3 +1,5 @@
+import logging
+
 from app import *
 from app import log, storage, node, transaction, util, key
 from app.block import Block
@@ -7,6 +9,11 @@ from app.consensus.pow import proof_of_work
 from app.node import Node
 
 storage.init()
+
+
+
+
+
 key.generate_key()
 
 listen_thread = None
