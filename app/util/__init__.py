@@ -2,7 +2,6 @@ import netifaces
 import socket
 
 
-
 def get_ip_address(ifname):
 	import platform
 	plf = platform.system()

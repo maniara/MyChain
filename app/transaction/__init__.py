@@ -85,4 +85,5 @@ def create_tx(pub_key, pri_key, msg):
 
 
 def send_tx(tx):
+	# 모든 노드에 transaction 전송
 	sender.send_to_all_node(tx.to_json())

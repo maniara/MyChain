@@ -1,4 +1,5 @@
 import codecs
+import hashlib
 
 from merkle import MerkleTree
 
