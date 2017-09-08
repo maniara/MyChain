@@ -1,3 +1,5 @@
+import json
+
 from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 
@@ -19,6 +21,9 @@ class Block(storage.Base):
     nonce = Column(String)
     block_info = Column(String)
     block_miner = Column(Integer)
+
+    def __init__(self):
+        self.type = 'B'
 
     def __str__(self):
         return self.to_json()
@@ -66,19 +71,33 @@ def get_my_block():
 
 
 def count():
-    storage.count(Block)
+    return storage.count(Block)
 
 
 def get_all_block():
     return storage.get_all(Block)
 
 
+def get_genesis_block():
+    b = Block()
+    b.prev_block_id = 'B000000000000'
+    b.prev_block_hash = '0'
+    b.block_id = 'B000000000000'
+    b.merkle_root = 'mychain'
+    b.block_hash = 'mychain'
+    b.nonce = 2010101010
+
+    return b
+
+
 def get_last_block():
-    return get_all_block()[-1]
+    if count() == 0:
+        return get_genesis_block()
+    else:
+        return get_all_block()[-1]
 
 
 if __name__ == '__main__':
-    import json
 
     t = GenesisBlock()
     temp = json.dumps(t, indent=4, default=lambda o: o.__dict__, sort_keys=True)

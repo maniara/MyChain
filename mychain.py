@@ -17,6 +17,11 @@ def terminate():
 	os._exit(1)
 
 
+def create_block_menu():
+	create_block()
+	back()
+
+
 def send_tx():
 	print("Input a message \n")
 	print("9. Back")
@@ -73,9 +78,10 @@ def exec_menu(choice):
 def main_menu():
 	print("\nPlease choose the menu you want to start:")
 	print("1. Send a transaction")
-	print("2. Show node list")
-	print("3. Show transaction list")
-	print("4. Show block list")
+	print("2. Create a block")
+	print("3. Show node list")
+	print("4. Show transaction list")
+	print("5. Show block list")
 
 	print("\n0. Quit\n")
 	choice = input(" >>  ")
@@ -93,10 +99,11 @@ def back():
 menu_actions = {
 	'main_menu': main_menu,
 	'1': send_tx,
-	'2': show_node_list,
-	'3': show_transaction_list,
-	'4': show_block_list,
-	'9': back,
+	'2': create_block_menu,
+	'3': show_node_list,
+	'4': show_transaction_list,
+	'5': show_block_list,
+	'6': back,
 	'0': terminate,
 }
 

@@ -43,6 +43,6 @@ def get_all(clz):
 	return session.query(clz).all()
 
 
-def remove_all(table_name):
-	session.execute('''TRUNCATE TABLE ''' + table_name)
+def remove_all(clz):
+	session.query(clz).delete()
 	session.commit()
