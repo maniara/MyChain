@@ -40,7 +40,7 @@ def start(thread_name, ip_address, port):
 
 				# 수신된 데이터가 없는 경우
 				if len(data) == 0:
-					continue
+					break
 
 				# json 형태의 데이터를 dict 타입으로 변경
 				data_json_obj = json.loads(data)
