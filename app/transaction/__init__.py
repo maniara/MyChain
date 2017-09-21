@@ -1,3 +1,4 @@
+import codecs
 import datetime
 import json
 
@@ -5,7 +6,7 @@ from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 
 # import key
-from app import storage
+from app import storage, key
 from app.communicator import sender
 
 
@@ -72,14 +73,15 @@ def create_tx(pub_key, pri_key, msg):
 
 	msg = tx.time_stamp.strftime('%Y%m%d%H%M%S') + msg
 
-	# TODO release comment when pki is implemented
-	# pub_key_b = key.key_to_string(pub_key)
-	# tx.pub_key = codecs.encode(pub_key_b, 'hex_codec').decode('utf-8')
-	# sig = key.get_signature(msg, pri_key)
+	pub_key_b = key.key_to_string(pub_key)
 
-	sig = msg
-	tx.signature = sig
-	# codecs.encode(sig, 'hex_codec').decode('utf-8')
+	# transaction에 공개키 저장
+	tx.pub_key = codecs.encode(pub_key_b, 'hex_codec').decode('utf-8')
+
+	sig = key.get_signature(msg, pri_key)
+
+	# transaction에 암호화된 메세지 저장
+	tx.signature = codecs.encode(sig, 'hex_codec').decode('utf-8')
 
 	return tx
 

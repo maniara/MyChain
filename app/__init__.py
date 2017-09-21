@@ -13,11 +13,6 @@ from app.node import Node
 storage.init()
 
 
-
-
-
-key.generate_key()
-
 listen_thread = None
 
 
@@ -115,22 +110,7 @@ def list_all_block():
 
 
 def set_my_node():
-	# todo implement generating key
-	'''
-	key_path = '../private.pem'
-	pri_key = ''
-	pub_key = ''
-	try:
-		f = open(key_path, encoding='utf-8')
-		f.close()
-		pri_key, pub_key = get_key()
-	except:
-		pri_key, pub_key = generate_key()
-	'''
-
 	my_node = Node(util.get_ip_address('en0'))
-
-	# my_node.public_key = codecs.encode(pub_key.to_string(), 'hex_codec').decode('utf-8')
-	# my_node.private_key = codecs.encode(pri_key.to_string(), 'hex_codec').decode('utf-8')
+	key.generate_key()
 	log.write("Set my node")
 	node.add_node(my_node)
