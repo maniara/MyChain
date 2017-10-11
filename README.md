@@ -1,4 +1,4 @@
-# SeChain
+# MyChain
 Blockchain System for Education
 
 ## 실행방법
@@ -11,14 +11,22 @@ Blockchain System for Education
 
 3. 외부 라이브러리 설치
 <pre><code>pip3 install -r requirments.txt
-pip3 install --editable .
 </code></pre>
 
 4. 실행
 
 > 블록체인 실행
-<pre><code>mychain run -p '포트 번호'</code></pre>
+<pre><code>python3 mychain.py</code></pre>
 
-> 트랜잭션 전송
-<pre><code>mychain sendtx -a 아이피 주소 -m 메세지</code></pre>
+자신의 노드를 생성 후 시작 
+숫자 입력으로 다음의 명령어 실행
+>
+> 1. 트랜잭션 전송
+> 2. 블록 생성
+> 3. 노드 리스트 출력
+> 4. 트랜잭션 리스트 출력
+> 5. 블록 리스트 출력
+>
+> 0. 종료
+>
 
