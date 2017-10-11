@@ -13,9 +13,7 @@ Blockchain System for Education
 <pre><code>pip3 install -r requirments.txt
 </code></pre>
 
-4. 실행
-
-> 블록체인 실행
+4. 블록 체인 실행
 <pre><code>python3 mychain.py</code></pre>
 
 자신의 노드를 생성 후 시작 
