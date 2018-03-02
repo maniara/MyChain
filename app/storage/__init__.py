@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 Base = declarative_base()
 
-engine = create_engine('sqlite:///mychain.db?check_same_thread=False')
+engine = create_engine('sqlite:///mychain1.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBSession = scoped_session(sessionmaker(bind=engine))
 session = DBSession()

@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/magyeong-ug/workspace/MyChainForKISA/venv"
+VIRTUAL_ENV="/Users/KoDeokyoon/GitHub Repository/MyChain/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

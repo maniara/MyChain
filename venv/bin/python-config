@@ -1,4 +1,4 @@
-#!/Users/magyeong-ug/workspace/MyChainForKISA/venv/bin/python
+#!/Users/KoDeokyoon/GitHub Repository/MyChain/venv/bin/python
 
 import sys
 import getopt

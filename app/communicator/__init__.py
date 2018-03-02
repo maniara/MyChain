@@ -5,6 +5,7 @@ import time
 import zmq
 
 from app import log
+from app.node import Node
 from app import node
 
 PING_PORT_NUMBER = 9999
@@ -21,8 +22,15 @@ def stop():
 	is_running = False
 	t.join()
 
+def startPrivate(ip_list):
+	node.remove_all_node()
+	# 프라이빗 블록체인에서는 등록된 ip만 브로드캐스팅 할 수 있게함
+	for ip in ip_list:
+		#node.add_node(Node(ip))
+		print(ip)
 
-def start():
+def startPublic():
+	# UDP 네트워크 내에서 모든 이 메소드를 호출하는 PC를 자동으로 노드로 등록함
 	def find_node_thread():
 
 		# UDP 소켓 생성

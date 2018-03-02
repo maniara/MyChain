@@ -8,7 +8,7 @@ from app.block import Block
 from app.communicator import receiver, sender
 from app.consensus.merkle_tree import merkle_tree, merkle_tree_2
 from app.consensus.pow import proof_of_work
-from app.node import Node
+from app.node.Node import Node
 
 storage.init()
 
