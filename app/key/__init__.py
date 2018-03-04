@@ -14,7 +14,7 @@ def generate_key():
 	open(KEY_PATH + "/private.pem", "w", encoding='utf-8').write(pri_key.to_pem().decode('utf-8'))
 	open(KEY_PATH + "/public.pem", "w", encoding='utf-8').write(pub_key.to_pem().decode('utf-8'))
 
-	return pub_key, pri_key
+	return pri_key, pub_key
 
 
 def get_key():

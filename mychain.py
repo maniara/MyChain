@@ -8,7 +8,7 @@ def signal_handler(_signal, frame):
 
 
 signal.signal(signal.SIGINT, signal_handler)
-ip_list = ["192.168.0.157","0.0.0.0"]
+ip_list = ["192.168.0.157","192.168.0.170"]
 communicator.startPrivate(ip_list) #call startPublic() for open network
 initiate_node(3000)
 

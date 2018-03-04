@@ -5,7 +5,7 @@ from app.block.GenesisBlock import GenesisBlock
 
 def create_block(block):
     storage.insert(block)
-
+    #to do send block
 
 def get_my_block():
     return 0
@@ -36,6 +36,9 @@ def get_last_block():
         return get_genesis_block()
     else:
         return get_all_block()[-1]
+
+def validate_block():
+    pass
 
 
 if __name__ == '__main__':
