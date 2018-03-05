@@ -8,7 +8,7 @@ def signal_handler(_signal, frame):
 
 
 signal.signal(signal.SIGINT, signal_handler)
-ip_list = ["192.168.0.157","192.168.0.170"]
+ip_list = []
 communicator.startPrivate(ip_list) #call startPublic() for open network
 initiate_node(3000)
 
@@ -33,8 +33,8 @@ def send_tx():
 
 	if choice != '9' or choice != '0':
 		message = choice
-		pri_key, pub_key = key.get_key()
-		tx = transaction.create_tx(pub_key, pri_key, message)
+		#pri_key, pub_key = key.get_key()
+		tx = transaction.create_tx(message)
 		transaction.send_tx(tx)
 
 	exec_menu(choice)

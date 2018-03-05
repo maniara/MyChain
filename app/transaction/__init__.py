@@ -21,18 +21,16 @@ def remove_all():
 	storage.remove_all(Transaction)
 
 
-def create_tx(pub_key, pri_key, msg):
+def create_tx(msg):
 	tx = Transaction()
 	tx.message = msg
 
 	msg = tx.time_stamp.strftime('%Y%m%d%H%M%S') + msg
 
-	pub_key_b = key.key_to_string(pub_key)
-
 	# transaction에 공개키 저장
-	tx.pub_key = codecs.encode(pub_key_b, 'hex_codec').decode('utf-8')
+	tx.pub_key = codecs.encode(key.get_pub_key_string(), 'hex_codec').decode('utf-8')
 
-	sig = key.get_signature(msg, pri_key)
+	sig = key.get_signature(msg)
 
 	# transaction에 암호화된 메세지 저장
 	tx.signature = codecs.encode(sig, 'hex_codec').decode('utf-8')

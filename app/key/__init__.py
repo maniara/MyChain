@@ -1,6 +1,7 @@
 import os
 
 from ecdsa import SigningKey, NIST256p, VerifyingKey
+from app import log
 
 KEY_PATH = os.getcwd()
 
@@ -13,14 +14,12 @@ def generate_key():
 	# 생성된 공인키, 개인키를 파일로 생성
 	open(KEY_PATH + "/private.pem", "w", encoding='utf-8').write(pri_key.to_pem().decode('utf-8'))
 	open(KEY_PATH + "/public.pem", "w", encoding='utf-8').write(pub_key.to_pem().decode('utf-8'))
-
-	return pri_key, pub_key
-
+	log.write("New Keys are generated")
 
 def get_key():
 	# 파일로부터 읽어들인 공개키, 개인키 리턴
 	pri_key = SigningKey.from_pem(open(KEY_PATH + "/private.pem", encoding='utf-8').read())
-	pub_key = pri_key.get_verifying_key()
+	pub_key = VerifyingKey.from_pem(open(KEY_PATH + "/public.pem", encoding='utf-8').read())
 
 	return pri_key, pub_key
 
@@ -29,7 +28,14 @@ def key_to_string(pub_key):
 	return pub_key.to_string()
 
 
-def get_signature(message, private_key):
+def get_pub_key_string():
+	pri, pub = get_key()
+	return pub.to_string()
+
+
+
+def get_signature(message):
+	private_key, pub = get_key()
 	return private_key.sign(message.encode('utf-8'))
 
 
@@ -39,7 +45,9 @@ def verify_signature(public_key_str, signature, message):
 	return public_key.verify(bytes.fromhex(signature), message.encode('utf-8'))
 
 
+# For the TEST
 if __name__ == '__main__':
+	print("in the main")
 	import json
 
 	pri, pub = generate_key()

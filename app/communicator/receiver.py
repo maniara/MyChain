@@ -3,7 +3,8 @@ from socket import *
 
 from app import log
 from app import transaction
-from app.block import create_block, validate_block, Block
+from app.block import validate_block, Block
+from app import block
 from app.transaction import Transaction
 from app import key
 
@@ -53,20 +54,22 @@ def start(thread_name, ip_address, port):
 					# dict 데이터로부터 transaction 객체 생성
 					tx = Transaction().from_json(data_json_obj)
 
-
-					# TODO release comment when pki is implemented
 					verify_msg = data_json_obj['time_stamp'] + data_json_obj['message']
 
 					if key.verify_signature(data_json_obj['pub_key'], data_json_obj['signature'],
 					                                         verify_msg) is True:
-					     log.write("Transaction is valid")
-					     tx = Transaction().from_json(data_json_obj)
-					     transaction.add_transaction(tx)
+						log.write("Transaction is valid")
+						tx = Transaction().from_json(data_json_obj)
+						transaction.add_transaction(tx)
+						break
 					else:
-					     log.write("Transaction is invalid")
+						log.write("Transaction is invalid")
+						break
+
 
 				# 블록을 수신한 경우
 				elif data_json_obj['type'] == 'B':
+					log.write("Receiving a block")
 					if validate_block():
 						# 기존의 트랜잭션 삭제
 						transaction.remove_all()
@@ -75,10 +78,10 @@ def start(thread_name, ip_address, port):
 						received_block = Block().from_json(data_json_obj)
 
 						# 블록 저장
-						create_block(received_block)
+						block.store_block(received_block)
 
 					else:
-						print("block validation failed")
+						print("Block is invalid")
 
 			except:
 				traceback.print_exc()

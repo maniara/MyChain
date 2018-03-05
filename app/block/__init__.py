@@ -1,11 +1,54 @@
 import json
+import datetime
 from app import storage
 from app.block.Block import Block
 from app.block.GenesisBlock import GenesisBlock
+from app.consensus.merkle_tree import merkle_tree
+from app.consensus.pow import proof_of_work
 
-def create_block(block):
-    storage.insert(block)
-    #to do send block
+def create_block(transactions):
+
+    # 내 node 가 가지고 있는 마지막 블럭
+    last_block = get_last_block()
+
+    # transaction JSON 문자열로 변환
+    transactions_str = list(map(lambda x: x.to_json(), transactions))
+
+    # transaction으로부터 merkle root 생성
+    merkle_root = merkle_tree(transactions_str)
+
+    # block 정보에 merkle root 할당
+    block_info = merkle_root
+
+    # block 새로 생성
+    _block = Block()
+
+    # 마지막 block이 있는 경우
+    if last_block:
+        # block 정보에 마지막 블럭의 해쉬를 더함
+        block_info += last_block.block_hash
+
+        # 새로 생성한 block에 이전 block 정보 저장
+        _block.prev_block_hash = last_block.block_hash
+        _block.prev_block_id = last_block.block_id
+
+    # 작업 증명을 통해 nonce값과 hash 결과 생성
+    hash_result, nonce = proof_of_work(block_info, diff_bits=5)
+
+    # block 정보
+    _block.block_hash = hash_result
+    _block.nonce = nonce
+    _block.block_info = block_info
+    _block.time_stamp = datetime.datetime.now()
+    _block.block_id = "B"+str(_block.time_stamp)
+    _block.merkle_root = merkle_root
+
+    return _block
+
+def store_block(_block):
+    # 내 node 에 block 저장
+    storage.insert(_block)
+
 
 def get_my_block():
     return 0
@@ -38,12 +81,14 @@ def get_last_block():
         return get_all_block()[-1]
 
 def validate_block():
-    pass
+    return True
 
 
+'''
 if __name__ == '__main__':
 
     t = GenesisBlock()
     temp = json.dumps(t, indent=4, default=lambda o: o.__dict__, sort_keys=True)
     temps = json.loads(temp)
-    print(type(temps['nonce']))
+    print(type(temps['nonce'])
+'''
