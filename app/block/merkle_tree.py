@@ -17,6 +17,7 @@ def merkle_tree(transactions):
 
     return codecs.encode(mt.build(), 'hex-codec').decode('utf-8')
 
+
 # recursive method
 def merkle_tree_2(p_items):
     blocks = []
@@ -49,6 +50,7 @@ def merkle_tree_2(p_items):
     # recursive
     else:
         return merkle_tree_2(secondary)
+
 
 # ========================================================
 if __name__ == '__main__':

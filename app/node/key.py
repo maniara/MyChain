@@ -16,6 +16,7 @@ def generate_key():
 	open(KEY_PATH + "/public.pem", "w", encoding='utf-8').write(pub_key.to_pem().decode('utf-8'))
 	log.write("New Keys are generated")
 
+
 def get_key():
 	# 파일로부터 읽어들인 공개키, 개인키 리턴
 	pri_key = SigningKey.from_pem(open(KEY_PATH + "/private.pem", encoding='utf-8').read())
@@ -33,13 +34,11 @@ def get_pub_key_string():
 	return pub.to_string()
 
 
-
 def get_signature(message):
 	private_key, pub = get_key()
 	return private_key.sign(message.encode('utf-8'))
 
 
-# public_key_str -> json object KEY: [pub_key]  type: string
 def verify_signature(public_key_str, signature, message):
 	public_key = VerifyingKey.from_string(bytes.fromhex(public_key_str), curve=NIST256p)
 	return public_key.verify(bytes.fromhex(signature), message.encode('utf-8'))

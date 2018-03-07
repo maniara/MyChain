@@ -20,9 +20,5 @@ def count():
 	return storage.count(Node)
 
 
-def get_my_node():
-	pass
-
-
 def get_all():
 	return storage.get_all(Node)

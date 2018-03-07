@@ -1,54 +1,44 @@
-import logging
-
-
-
 from app import *
-from app import log, storage, node, transaction
+from app import log, storage, node, transaction, block
 from app.block import Block
-from app.communicator import receiver, sender, my_ip_address
-from app.consensus.merkle_tree import merkle_tree, merkle_tree_2
-from app.consensus.pow import proof_of_work
+from app import communicator
 from app.node.Node import Node
-from app.node import key
-
-storage.init()
-
+from app.communicator import receiver
 
 listen_thread = None
 port_number = None
+
+def app_start():
+	ip_list = []
+	port_number = 3000
+	storage.init()
+	communicator.set_network(ip_list, isPrivate=True)
+	start_communicator(port_number)
+
 
 def send_transaction(msg):
 	# pri_key, pub_key = key.get_key()
 	tx = transaction.create_tx(msg)
 	transaction.send_tx(tx)
 
-def initiate_node(port):
+
+def start_communicator(port):
+	import threading
+	global port_number
 	port_number = port
 	set_my_node(False)
 	node.key.generate_key()
 
 	log.write("Start node")
-	start_node()
 
-
-'''
-	Start Receiver Thread
-	PORT: 10654
-'''
-
-
-def start_node():
-	import threading
 	global listen_thread
 	listen_thread = threading.Thread(target=receiver.start, args=("Listener_Thread",
-																  my_ip_address.get_ip_address('en0'), port_number))
+																			   communicator.my_ip_address.get_ip_address('en0'), port_number))
 	listen_thread.start()
 
 
-def stop_node():
-	storage.session.commit()
-	storage.session.close()
-	receiver.stop()
+def stop_communicator():
+	communicator.receiver.stop()
 	global listen_thread
 	listen_thread.join()
 
@@ -82,6 +72,7 @@ def list_all_transaction():
 
 
 def list_all_block():
+	import logging
 	for b in block.get_all_block():
 		log.write(b, logging.DEBUG)
 

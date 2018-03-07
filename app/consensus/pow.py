@@ -6,7 +6,7 @@ from numpy import long
 max_nonce = 2 ** 32
 
 
-def proof_of_work(block_info, diff_bits):
+def get_nonce(block_info, diff_bits):
 
     target = 2 ** (256 - diff_bits)
 
@@ -24,5 +24,5 @@ def proof_of_work(block_info, diff_bits):
 
 
 if __name__ == '__main__':
-    n = proof_of_work('TEST', 20)
+    n = get_nonce('TEST', 20)
     print(n)

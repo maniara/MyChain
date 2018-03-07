@@ -1,10 +1,10 @@
-import json
 import datetime
+
 from app import storage
 from app.block.Block import Block
-from app.block.GenesisBlock import GenesisBlock
-from app.consensus.merkle_tree import merkle_tree
-from app.consensus.pow import proof_of_work
+from app.block.merkle_tree import merkle_tree
+from app.consensus import pow
+
 
 def create_block(transactions):
 
@@ -33,7 +33,7 @@ def create_block(transactions):
         _block.prev_block_id = last_block.block_id
 
     # 작업 증명을 통해 nonce값과 hash 결과 생성
-    hash_result, nonce = proof_of_work(block_info, diff_bits=5)
+    hash_result, nonce = pow.get_nonce(block_info, diff_bits=5)
 
     # block 정보
     _block.block_hash = hash_result
@@ -44,6 +44,7 @@ def create_block(transactions):
     _block.merkle_root = merkle_root
 
     return _block
+
 
 def store_block(_block):
     # 내 node 에 block 저장
@@ -79,6 +80,7 @@ def get_last_block():
         return get_genesis_block()
     else:
         return get_all_block()[-1]
+
 
 def validate_block():
     return True

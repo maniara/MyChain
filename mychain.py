@@ -1,14 +1,19 @@
 import signal
 
-from app import *
+from app import communicator
+from app import storage
+import app
 
 def terminate():
 	import os
+	storage.session.commit()
+	storage.session.close()
+	app.stop_communicator()
 	os._exit(1)
 
 
 def create_block_menu():
-	create_block()
+	app.create_block()
 	back()
 
 
@@ -21,7 +26,7 @@ def send_tx():
 	print(choice)
 
 	if choice != '9' or choice != '0':
-		send_transaction(choice)
+		app.send_transaction(choice)
 
 
 	exec_menu(choice)
@@ -31,21 +36,21 @@ def send_tx():
 def show_node_list():
 	print("\nNode list\n")
 
-	list_all_node()
+	app.list_all_node()
 	back()
 
 
 def show_transaction_list():
 	print("\nTransaction list\n")
 
-	list_all_transaction()
+	app.list_all_transaction()
 	back()
 
 
 def show_block_list():
 	print("\nBlock list\n")
 
-	list_all_block()
+	app.list_all_block()
 	back()
 
 
@@ -82,15 +87,13 @@ def main_menu():
 def back():
 	menu_actions['main_menu']()
 
+
 def signal_handler(_signal, frame):
 	terminate()
 
 
+app.app_start()
 signal.signal(signal.SIGINT, signal_handler)
-ip_list = []
-port_number = 3000
-communicator.set_network(ip_list, isPrivate=True)
-initiate_node(port_number)
 
 # Menu definition
 menu_actions = {
@@ -108,3 +111,9 @@ print("\nCommand line interface for private block chain.\n")
 
 if __name__ == '__main__':
 	main_menu()
+
+
+
+
+
+

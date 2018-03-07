@@ -22,6 +22,7 @@ def stop():
 	is_running = False
 	t.join()
 
+
 def set_network(ip_list, isPrivate = True):
 	if isPrivate:
 		node.remove_all_node()
@@ -31,6 +32,7 @@ def set_network(ip_list, isPrivate = True):
 			#print(ip)
 	else:
 		start_public()
+
 
 def start_public():
 	# UDP 네트워크 내에서 모든 이 메소드를 호출하는 PC를 자동으로 노드로 등록함
