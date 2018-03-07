@@ -1,7 +1,8 @@
 import threading
 from socket import *
 
-from app import node, util
+from app import node
+from app.communicator import my_ip_address
 
 
 def send(ip_address, message, port, *args):
@@ -20,7 +21,7 @@ def send_to_all_node(message, except_my_node=False):
 
 	# True 일 경우 내 node를 제외한 node에게 전송
 	if except_my_node:
-		address_list = list(filter(lambda x: x != util.get_ip_address('en0'), address_list))
+		address_list = list(filter(lambda x: x != my_ip_address.get_ip_address('en0'), address_list))
 
 	send_threads = []
 

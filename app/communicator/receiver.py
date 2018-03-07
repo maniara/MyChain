@@ -6,7 +6,7 @@ from app import transaction
 from app.block import validate_block, Block
 from app import block
 from app.transaction import Transaction
-from app import key
+from app.node import key
 
 is_running = True
 
@@ -54,10 +54,8 @@ def start(thread_name, ip_address, port):
 					# dict 데이터로부터 transaction 객체 생성
 					tx = Transaction().from_json(data_json_obj)
 
-					verify_msg = data_json_obj['time_stamp'] + data_json_obj['message']
-
-					if key.verify_signature(data_json_obj['pub_key'], data_json_obj['signature'],
-					                                         verify_msg) is True:
+					message = data_json_obj['time_stamp'] + data_json_obj['message']
+					if transaction.validate_tx(data_json_obj['pub_key'], data_json_obj['signature'], message):
 						log.write("Transaction is valid")
 						tx = Transaction().from_json(data_json_obj)
 						transaction.add_transaction(tx)

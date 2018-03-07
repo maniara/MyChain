@@ -1,8 +1,9 @@
 import codecs
 from app.transaction.Transaction import Transaction
+from app.node import key
 
 # import key
-from app import storage, key
+from app import storage
 from app.communicator import sender
 
 def add_transaction(tx):
@@ -41,3 +42,8 @@ def create_tx(msg):
 def send_tx(tx):
 	# 모든 노드에 transaction 전송
 	sender.send_to_all_node(tx.to_json())
+
+
+def validate_tx(pub_key, signature, message):
+	if key.verify_signature(pub_key, signature, message):
+		return True

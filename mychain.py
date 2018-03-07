@@ -2,17 +2,6 @@ import signal
 
 from app import *
 
-
-def signal_handler(_signal, frame):
-	terminate()
-
-
-signal.signal(signal.SIGINT, signal_handler)
-ip_list = []
-communicator.startPrivate(ip_list) #call startPublic() for open network
-initiate_node(3000)
-
-
 def terminate():
 	import os
 	os._exit(1)
@@ -32,10 +21,8 @@ def send_tx():
 	print(choice)
 
 	if choice != '9' or choice != '0':
-		message = choice
-		#pri_key, pub_key = key.get_key()
-		tx = transaction.create_tx(message)
-		transaction.send_tx(tx)
+		send_transaction(choice)
+
 
 	exec_menu(choice)
 	return
@@ -95,6 +82,15 @@ def main_menu():
 def back():
 	menu_actions['main_menu']()
 
+def signal_handler(_signal, frame):
+	terminate()
+
+
+signal.signal(signal.SIGINT, signal_handler)
+ip_list = []
+port_number = 3000
+communicator.set_network(ip_list, isPrivate=True)
+initiate_node(port_number)
 
 # Menu definition
 menu_actions = {

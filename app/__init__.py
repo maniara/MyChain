@@ -3,21 +3,29 @@ import logging
 
 
 from app import *
-from app import log, storage, node, transaction, util, key
+from app import log, storage, node, transaction
 from app.block import Block
-from app.communicator import receiver, sender
+from app.communicator import receiver, sender, my_ip_address
 from app.consensus.merkle_tree import merkle_tree, merkle_tree_2
 from app.consensus.pow import proof_of_work
 from app.node.Node import Node
+from app.node import key
 
 storage.init()
 
 
 listen_thread = None
+port_number = None
 
+def send_transaction(msg):
+	# pri_key, pub_key = key.get_key()
+	tx = transaction.create_tx(msg)
+	transaction.send_tx(tx)
 
-def initiate_node(*args):
+def initiate_node(port):
+	port_number = port
 	set_my_node(False)
+	node.key.generate_key()
 
 	log.write("Start node")
 	start_node()
@@ -33,7 +41,7 @@ def start_node():
 	import threading
 	global listen_thread
 	listen_thread = threading.Thread(target=receiver.start, args=("Listener_Thread",
-	                                                              util.get_ip_address('en0'), 3000))
+																  my_ip_address.get_ip_address('en0'), port_number))
 	listen_thread.start()
 
 
@@ -79,9 +87,8 @@ def list_all_block():
 
 
 def set_my_node(set_my_node=True):
-	if set_my_node():
-		my_node = Node(util.get_ip_address('en0'))
+	if set_my_node:
+		my_node = Node(my_ip_address.get_ip_address('en0'))
 		node.add_node(my_node)
-	key.generate_key()
 	log.write("Set my node")
 
