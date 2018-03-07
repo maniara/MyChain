@@ -8,7 +8,7 @@ port_number = None
 
 
 def start_app():
-	ip_list = []
+	ip_list = ["192.168.0.37","192.168.0.20"]
 	port_number = 3000
 	storage.init()
 	communicator.set_network(ip_list, isPrivate=True)
@@ -74,6 +74,7 @@ def list_all_node():
 
 
 def list_all_transaction():
+	import logging
 	for t in transaction.get_transactions():
 		log.write(t, logging.DEBUG)
 
