@@ -68,12 +68,11 @@ def start(thread_name, ip_address, port):
 				# 블록을 수신한 경우
 				elif data_json_obj['type'] == 'B':
 					log.write("Receiving a block")
-					if validate_block():
+					# 블록 생성
+					received_block = Block().from_json(data_json_obj)
+					if validate_block(received_block):
 						# 기존의 트랜잭션 삭제
 						transaction.remove_all()
-
-						# 블록 생성
-						received_block = Block().from_json(data_json_obj)
 
 						# 블록 저장
 						block.store_block(received_block)

@@ -82,8 +82,22 @@ def get_last_block():
         return get_all_block()[-1]
 
 
-def validate_block():
-    return True
+def validate_block(block):
+    import hashlib
+    from numpy import long
+
+    #check nonce
+    block_info = block.block_info
+    nonce = block.nonce
+    diff_bits = 5
+    target = 2 ** (256 - diff_bits)
+
+    hash_result = hashlib.sha256(str(block_info).encode('utf-8') + str(nonce).encode('utf-8')).hexdigest()
+
+    if long(hash_result, 16) <= target:
+        return True
+    else:
+        return False
 
 
 '''

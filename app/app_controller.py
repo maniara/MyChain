@@ -1,12 +1,11 @@
-from app import *
 from app import log, storage, node, transaction, block
-from app.block import Block
 from app import communicator
 from app.node.Node import Node
 from app.communicator import receiver
 
 listen_thread = None
 port_number = None
+
 
 def start_app():
 	ip_list = []
@@ -17,11 +16,11 @@ def start_app():
 
 
 def finish_app():
-    import os
-    storage.session.commit()
-    storage.session.close()
-    stop_communicator()
-    os._exit(1)
+	import os
+	storage.session.commit()
+	storage.session.close()
+	stop_communicator()
+	os._exit(1)
 
 
 def send_transaction(msg):

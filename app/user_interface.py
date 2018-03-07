@@ -84,11 +84,6 @@ def main_menu():
 def back():
     menu_actions['main_menu']()
 
-
-def signal_handler(_signal, frame):
-	terminate()
-
-
 # Menu definition
 menu_actions = {
 	'main_menu': main_menu,
