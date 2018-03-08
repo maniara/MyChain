@@ -94,6 +94,8 @@ def validate_block(block):
 
     hash_result = hashlib.sha256(str(block_info).encode('utf-8') + str(nonce).encode('utf-8')).hexdigest()
 
+    print("Validating block:" + str(long(hash_result,16)+"/"+target))
+
     if long(hash_result, 16) <= target:
         return True
     else:
