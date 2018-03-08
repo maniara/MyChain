@@ -2,6 +2,7 @@ from app import log, storage, node, transaction, block
 from app import communicator
 from app.node.Node import Node
 from app.communicator import receiver
+from app.communicator import sender
 
 listen_thread = None
 port_number = None
