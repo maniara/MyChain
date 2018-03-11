@@ -8,6 +8,7 @@
 *.o
 *.so
 *.pyc
+*.pem
 
 # Packages #
 ############
@@ -44,3 +45,4 @@ tmtagsHistory
 *.egg-info
 .pem
 .db
+*.pem
