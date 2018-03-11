@@ -12,6 +12,7 @@ def get_nonce(block_info, diff_bits):
 
     found = False
 
+    #target 보다 작은 해시의 nonce를 찾을 때 까지
     while not found:
         nonce = random.randint(0, max_nonce)
 

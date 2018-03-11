@@ -8,7 +8,7 @@ def chunk(list, n):
     for i in range(0, len(list), n):
         yield list[i:i + n]
 
-# Using merkle package
+# 라이브러리를 사용한 머클트리
 def merkle_tree(transactions):
     mt = MerkleTree()
 
@@ -18,7 +18,7 @@ def merkle_tree(transactions):
     return codecs.encode(mt.build(), 'hex-codec').decode('utf-8')
 
 
-# recursive method
+# 머클트리 직접 구현방법(생략 가능)
 def merkle_tree_2(p_items):
     blocks = []
 

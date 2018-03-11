@@ -5,6 +5,7 @@ from app import node
 from app.communicator import my_ip_address
 
 
+#특정 아이피로 메시지를 전송하는 함수
 def send(ip_address, message, port, *args):
 	receiver_addr = (ip_address, port)
 	tcp_socket = socket(AF_INET, SOCK_STREAM)
@@ -15,6 +16,7 @@ def send(ip_address, message, port, *args):
 		print("Connection Failed while sending", e)
 
 
+#모든 등록된 ip로 메시지를 전송하는 함수
 def send_to_all_node(message, except_my_node=False):
 	# node 목록에서 ip 만 리스트로 추출
 	address_list = list(map(lambda x: x.ip_address, node.get_all()))

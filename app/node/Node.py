@@ -8,6 +8,7 @@ class Node(storage.Base):
 	__tablename__ = 'nodes'
 
 	ip_address = Column(String, primary_key=True)
+	#노드는 N
 	type = Column(String)
 	public_key = Column(String)
 	private_key = Column(String)

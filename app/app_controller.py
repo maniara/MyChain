@@ -4,15 +4,15 @@ from app.node.Node import Node
 from app.communicator import receiver
 from app.communicator import sender
 
+#블록체인 컨트롤 인터페이스 API
 listen_thread = None
 port_number = None
 
 
-def start_app():
-	ip_list = ["192.168.0.37","192.168.0.20"]
+def start_app(ip_list, isPrivate):
 	port_number = 3000
 	storage.init()
-	communicator.set_network(ip_list, isPrivate=True)
+	communicator.set_network(ip_list, isPrivate)
 	start_communicator(port_number)
 
 
@@ -86,6 +86,7 @@ def list_all_block():
 		log.write(b, logging.DEBUG)
 
 
+#나의 IP를 노드로 등록함
 def set_my_node(set_my_node=True):
 	if set_my_node:
 		my_node = Node(my_ip_address.get_ip_address('en0'))

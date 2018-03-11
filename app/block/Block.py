@@ -3,17 +3,22 @@ from dateutil import parser
 from sqlalchemy import Column, String, Integer, DateTime
 import json
 
+#블록 엔티티
 class Block(storage.Base):
     __tablename__ = 'blocks'
 
     _id = Column(Integer, primary_key=True, autoincrement=True)
+    #타입 : 블록(B), 트랜잭션(T), 노드(N)
     type = Column(String)
+    #직전 블록의 아이디
     prev_block_id = Column(String)
+    #직전 블록의 해시
     prev_block_hash = Column(String)
     tx_list = Column(String)
     merkle_root = Column(String)
     time_stamp = Column(DateTime)
     block_id = Column(String)
+    #머클트리
     block_hash = Column(String)
     nonce = Column(String)
     block_info = Column(String)

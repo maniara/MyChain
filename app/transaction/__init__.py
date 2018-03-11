@@ -22,6 +22,7 @@ def remove_all():
 	storage.remove_all(Transaction)
 
 
+#트랜잭션 객체를 생성하는 함수
 def create_tx(msg):
 	tx = Transaction()
 	tx.message = msg
@@ -44,6 +45,8 @@ def send_tx(tx):
 	sender.send_to_all_node(tx.to_json())
 
 
+#트랜잭션을 검증하는 함수
 def validate_tx(pub_key, signature, message):
+	#전자서명을 검증함
 	if key.verify_signature(pub_key, signature, message):
 		return True

@@ -23,6 +23,7 @@ def stop():
 	t.join()
 
 
+#노드를 구성하는 함수, 프라이빗인 경우 아이피 주소를 리스트로 받음
 def set_network(ip_list, isPrivate = True):
 	if isPrivate:
 		node.remove_all_node()
@@ -34,6 +35,7 @@ def set_network(ip_list, isPrivate = True):
 		start_public()
 
 
+#퍼블릭 노드 생성 (생략 가능)
 def start_public():
 	# UDP 네트워크 내에서 모든 이 메소드를 호출하는 PC를 자동으로 노드로 등록함
 	def find_node_thread():

@@ -17,6 +17,7 @@ def stop():
 	is_running = False
 
 
+#리스너를 시작하는 함수
 def start(thread_name, ip_address, port):
 	import json
 
@@ -55,6 +56,7 @@ def start(thread_name, ip_address, port):
 					tx = Transaction().from_json(data_json_obj)
 
 					message = data_json_obj['time_stamp'] + data_json_obj['message']
+					#트랜잭션 검증(서명 검증)
 					if transaction.validate_tx(data_json_obj['pub_key'], data_json_obj['signature'], message):
 						log.write("Transaction is valid")
 						tx = Transaction().from_json(data_json_obj)
@@ -70,15 +72,19 @@ def start(thread_name, ip_address, port):
 					log.write("Receiving a block")
 					# 블록 생성
 					received_block = Block().from_json(data_json_obj)
+					#블록 검증(nonce 검증)
 					if validate_block(received_block):
 						# 기존의 트랜잭션 삭제
 						transaction.remove_all()
 
 						# 블록 저장
 						block.store_block(received_block)
+						print("Block is added")
+						break
 
 					else:
 						print("Block is invalid")
+						break
 
 			except:
 				traceback.print_exc()
